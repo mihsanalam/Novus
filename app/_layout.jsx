@@ -38,16 +38,13 @@ import "react-native-reanimated";
 import "../global.css";
 import { ClerkProvider } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { Linking } from 'react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 function MainLayout() {
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    SplashScreen.hideAsync();
-  }, []);
 
   return (
     <GluestackUIProvider mode="light">
@@ -61,7 +58,16 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    SplashScreen.hideAsync();
+    SplashScreen.hideAsync().catch(() => {});
+  }, []);
+
+  // listen for any deep links (Clerk may redirect to app) and log them
+  useEffect(() => {
+    const handler = ({ url }) => {
+      console.log('Deep link received in RootLayout:', url);
+    };
+    const sub = Linking.addEventListener('url', handler);
+    return () => sub.remove();
   }, []);
 
   return (

@@ -88,9 +88,24 @@ const Login = () => {
             console.log('Sign in result:', signInResult.status);
 
             if (signInResult.status === "complete") {
-                await setActive({ session: signInResult.createdSessionId });
-                console.log('Session set, navigating to home');
-                router.replace("/(main)/home");
+                try {
+                    await setActive({ session: signInResult.createdSessionId });
+                    console.log('Session set, navigating to home');
+                    router.replace("/(main)/home");
+                } catch (sessionError) {
+                    console.error('Error setting active session:', sessionError);
+                    toast.show({
+                        placement: "top",
+                        duration: 3000,
+                        render: ({ id }) => {
+                            return (
+                                <View className="bg-error-600 p-4 rounded-lg mx-4 mt-12">
+                                    <Text className="text-white font-medium">Session activation failed. Please try again.</Text>
+                                </View>
+                            );
+                        },
+                    });
+                }
             } else if (signInResult.status === "needs_second_factor") {
                 // Prepare email code for 2FA
                 await signIn.prepareSecondFactor({ strategy: "email_code" });
@@ -130,8 +145,23 @@ const Login = () => {
             });
 
             if (completeSignIn.status === "complete") {
-                await setActive({ session: completeSignIn.createdSessionId });
-                router.replace("/(main)/home");
+                try {
+                    await setActive({ session: completeSignIn.createdSessionId });
+                    router.replace("/(main)/home");
+                } catch (sessionError) {
+                    console.error('Error setting active session after 2FA:', sessionError);
+                    toast.show({
+                        placement: "top",
+                        duration: 3000,
+                        render: ({ id }) => {
+                            return (
+                                <View className="bg-error-600 p-4 rounded-lg mx-4 mt-12">
+                                    <Text className="text-white font-medium">Session activation failed after verification. Please try again.</Text>
+                                </View>
+                            );
+                        },
+                    });
+                }
             } else {
                 toast.show({
                     placement: "top",

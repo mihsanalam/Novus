@@ -13,13 +13,14 @@ export const courseService = {
       level,
       type,
       duration,
+      durationMinutes,
       price,
       instructor,
       "chapters": chapters[]-> {
         _id,
         title,
         duration,
-        durationUnit
+        durationMinutes
       }
     }`;
     return await client.fetch(query);
@@ -37,6 +38,7 @@ export const courseService = {
       level,
       type,
       duration,
+      durationMinutes,
       price,
       instructor,
       "chapters": chapters[]-> {
@@ -45,24 +47,26 @@ export const courseService = {
         description,
         videoUrl,
         duration,
-        durationUnit,
-        order,
+        durationMinutes,
         content
-      } | order(order asc)
+      }
     }`;
     return await client.fetch(query, { id });
   },
 
   // Search courses
   searchCourses: async (searchTerm) => {
-    const query = `*[_type == "course" && title match $searchTerm] {
+    const query = `*[_type == "course" && (title match $searchTerm || description match $searchTerm)] {
       _id,
       title,
       description,
       image,
+      videoUrl,
       category,
       level,
+      type,
       duration,
+      durationMinutes,
       price,
       instructor
     }`;

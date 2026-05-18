@@ -4,15 +4,30 @@ import { useRouter } from 'expo-router';
 import React, { useEffect } from "react";
 import { Image, ImageBackground, StyleSheet, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { useAuth } from '@clerk/clerk-expo'
+import { useAuth, useUser } from '@clerk/clerk-expo'
 
 const index = () => {
   const router = useRouter();
 
-   const { isSignedIn, isLoaded } = useAuth()
+  const { user } = useUser();
 
   useEffect(() => {
-    if(!isLoaded) return;
+    refreshUser();
+  }, [user]);
+
+  const refreshUser = async () => {
+    if (!user || typeof user.reload !== "function") return;
+    try {
+      await user.reload();
+    } catch (err) {
+      console.warn("User reload failed:", err);
+    }
+  }
+
+  const { isSignedIn, isLoaded } = useAuth()
+
+  useEffect(() => {
+    if (!isLoaded) return;
 
     const timer = setTimeout(() => {
       if (isSignedIn) {

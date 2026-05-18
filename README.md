@@ -20,7 +20,7 @@ A modern, feature-rich mobile learning platform built with React Native and Expo
 
 ## 🛠️ Tech Stack
 
-- **Framework:** React Native 0.81.5 with Expo SDK 54
+- **Framework:** React Native 0.83.6 with Expo SDK 55
 - **Navigation:** Expo Router 6.0
 - **Styling:** NativeWind (Tailwind CSS for React Native)
 - **UI Components:** Gluestack UI
@@ -55,7 +55,19 @@ npm install
 cp .env.example .env
 ```
 
-4. **Add your Clerk publishable key to `.env`:**
+4. **Create your own Sanity backend if you are cloning this repo:**
+- Create a Sanity project and dataset in the Sanity dashboard.
+- This is required for uploading and managing courses, because the app reads course content from Sanity.
+- Replace the sample values in `.env` with your own Sanity project settings.
+- Required Sanity env vars:
+```env
+EXPO_PUBLIC_SANITY_PROJECT_ID=your_project_id
+EXPO_PUBLIC_SANITY_DATASET=your_dataset
+EXPO_PUBLIC_SANITY_API_VERSION=2024-01-01
+EXPO_PUBLIC_SANITY_TOKEN=your_token_here
+```
+
+5. **Add your Clerk publishable key to `.env`:**
 ```env
 EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key_here
 ```
@@ -143,6 +155,14 @@ Novus/
 - "Go Premium" call-to-action
 - Subscribe button with custom styling
 - Chapter preview for all courses
+
+> **Note:** The built‑in Clerk `PricingTable` component only runs on web. On native devices the app now navigates to the `/profile` or `/billing` route and embeds the web checkout in a `WebView`.
+>
+> - This keeps the user inside the app and prevents crashes caused by deep‑link redirects from Clerk.
+> - For debugging the app logs deep link events (`novus://`, `exp://`, etc.) in the console.
+> - During development the WebView loads `http://localhost:8081/...` (Expo web default).
+>   * iOS simulators can use `localhost`; Android emulators use `10.0.2.2` or your PC’s LAN IP.
+> - When you deploy to production update the URL or use an environment variable so the WebView hits your deployed site.
 
 ## 🔧 Configuration
 

@@ -27,16 +27,24 @@ const Home = () => {
     const { user } = useUser();
     
     useEffect(() => {
+        if (user === null) {
+            // User not authenticated, redirect to login
+            router.replace("/(auth)/welcome");
+            return;
+        }
         fetchCourses();
-    }, []);
+    }, [user]);
 
     const fetchCourses = async () => {
         try {
             setLoading(true);
+            console.log('Fetching courses...');
             const data = await courseService.getAllCourses();
-            setCourses(data);
+            console.log('Courses fetched:', data?.length);
+            setCourses(data.slice(0, 4)); // Show only latest 4 courses
         } catch (error) {
             console.error('Error fetching courses:', error);
+            // Don't crash, just show empty list
         } finally {
             setLoading(false);
         }
@@ -68,14 +76,14 @@ const Home = () => {
     };
 
     return (
-        <View className="flex-1 px-7" style={{ paddingTop: safearea.top }}>
+        <View className="flex-1 px-7 bg-white" style={{ paddingTop: safearea.top }}>
             {/* header */}
 
             <Box className="flex-row items-center justify-between ">
                 {/* name & avatar */}
                 <Box className="flex-row items-center gap-3">
                     <Image
-                        source={{ uri: user?.imageUrl || user?.profileImageUrl }}
+                        source={user?.imageUrl || user?.profileImageUrl ? { uri: user.imageUrl || user.profileImageUrl } : require("../../assets/images/dummy-course.png")}
                         className="w-12 h-12 rounded-full"
                     />
                     <Box>
@@ -112,18 +120,16 @@ const Home = () => {
             {/* course list */}
 
             <Box className="flex-1 mt-10">
-                <Box className="flex-row justify-between items-center mb-3">
-                    <Text size="2xl" className="font-medium">
+                <Pressable onPress={() => router.push("/courses")} className="flex-row justify-between items-center mb-3">
+                    <Text size="2xl" className="font-medium text-black">
                         Explore Courses
                     </Text>
-                    <Pressable onPress={() => router.push("/courses")}>
-                        <MaterialCommunityIcons
-                            name="arrow-right"
-                            size={22}
-                            color="rgba(0,0,0,0.7)"
-                        />
-                    </Pressable>
-                </Box>
+                    <MaterialCommunityIcons
+                        name="arrow-right"
+                        size={22}
+                        color="#000"
+                    />
+                </Pressable>
 
                 {loading ? (
                     <Box className="mt-36">

@@ -31,35 +31,35 @@ const CourseCard = ({ item }) => {
                     },
                 })
             }
-            className="flex-1 gap-4 w-full bg-secondary-200 p-2 pb-5 rounded-[28px] border border-secondary-300 mb-4"
+            className="flex-1 gap-2 w-full bg-gray-100 p-2 pb-4 rounded-[28px] border border-gray-200 mb-4 shadow-sm"
             >
                 {/* course thumbnail */}
-                <Box className="relative w-full h-60">
+                <Box className="relative w-full h-60 bg-white rounded-3xl overflow-hidden">
                     <Image
                         source={item?.image ? { uri: urlFor(item.image).url() } : require("../assets/images/dummy-course.png")}
-                        className= "w-full h-full rounded-3xl object-cover"
+                        className= "w-full h-full object-cover"
                     />
-                    <Box className="absolute h-full w-full items-center justify-center">
-                        <Box className="bg-white/40 h-11 w-11 rounded-full items-center justify-center">
-                            <Ionicons name="play" size={24} color="white" className="ml-1" />
-                        </Box>
-                    </Box>
+
                 </Box>
 
                 {/* course title */}
                 <Box className="pl-2">
-                    <Text size="lg" className="font-medium">
+                    <Text size="lg" className="font-semibold text-black mb-1" numberOfLines={2}>
                         {item?.title}
                     </Text>
 
-                    <Box className="flex-row items-center gap-4 mt-2">
-                        <Box className="bg-[#2E5E99] px-3 py-1.5 rounded-full">
-                            <Text size="sm" className="text-white font-semibold">{item?.price > 0 ? `$${item?.price}` : 'Free'}</Text>
-                        </Box>
-                        <Box className="flex-row items-center gap-1.5 bg-white px-3 py-1.5 rounded-full">
-                            <Ionicons name ="time-outline" size={16} color="#2E5E99" />
-                            <Text size="sm" className="text-[#2E5E99] font-semibold">
-                                {item?.duration}h
+                    <Box className="flex-row items-center gap-3">
+                        <Text size="sm" className="text-[#2E5E99] font-medium">
+                            {item?.price > 0 ? `$${item?.price}` : 'Free'}
+                        </Text>
+                        <Box className="flex-row items-center gap-1">
+                            <Ionicons name ="time-outline" size={14} color="#000" />
+                            <Text size="sm" className="text-gray-600 font-medium">
+                                {(() => {
+                                    const hours = item?.duration || 0;
+                                    const mins = item?.durationMinutes || 0;
+                                    return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`;
+                                })()}
                             </Text>
                         </Box>
                     </Box>
