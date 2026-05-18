@@ -11,6 +11,15 @@
       "expo-splash-screen",
       "expo-font",
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e5aea119-600e-4714-b7f7-917b6c30f9c6"
+      }
+    },
+    "android": {
+      "package": "com.being_mihsan.novus"
+    }
   }
 }
