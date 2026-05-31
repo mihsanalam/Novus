@@ -1,10 +1,20 @@
+<div align="center">
+  <img src="assets/images/logo.png" alt="Novus Logo" width="150" />
+</div>
+
 # Novus - Learning Course Mobile App
 
 A modern, feature-rich mobile learning platform built with React Native and Expo. Browse courses, track your learning progress, and access premium educational content with an intuitive and beautiful user interface.
 
 ## 📱 Screenshots
 
-<!-- Add screenshots here -->
+<div align="center">
+  <img src="screenshots/welcome.png" width="250" alt="Welcome" />
+  <img src="screenshots/login.png" width="250" alt="Login" />
+  <img src="screenshots/signup.png" width="250" alt="Signup" />
+  <img src="screenshots/home.png" width="250" alt="Home" />
+  <img src="screenshots/course.png" width="250" alt="Course" />
+</div>
 
 ## ✨ Features
 
@@ -41,8 +51,8 @@ A modern, feature-rich mobile learning platform built with React Native and Expo
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/novus-learning-app.git
-cd novus-learning-app/Novus
+git clone https://github.com/mihsanalam/Novus.git
+cd novus
 ```
 
 2. **Install dependencies:**
